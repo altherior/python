@@ -7,23 +7,35 @@ def config_game (width, height, title, bg_color):
     pygame.display.set_caption(title)
     return screen
 
-def star_menu():
-    pass
+def star_menu(screen):
+    text_title = pygame.font.Font(constants.GOTICH,250)
+    text_menu = pygame.font.Font(None,30)
+    opciones = ["1 - Jugar (Pulsa Espacio)", "2 - Salir (Pulsar Q)"]
+    title_text = text_title.render("PONG",True,constants.YELLOW)
+    title_rect = title_text.get_rect(center = (constants.WINDOW_WIDTH//2, constants.WINDOW_HEIGHT//4))
+    # Creamos una lisgta para el textdo y el rectangulo de cada opción del menú 
+    texto_opciones = []
+    rects_opciones = []
+    for i, opcion in enumerate(opciones):
+        opcion_text = text_menu.render(opcion,True,constants.WHITE)
+        opcion_rect = opcion_text.get_rect(center = (constants.WINDOW_WIDTH//2, constants.WINDOW_HEIGHT//2 + 100 + i * 50))
+        texto_opciones.append(opcion_text)
+        rects_opciones.append(opcion_rect)
+
+    return title_text, title_rect, texto_opciones, rects_opciones
 
 def clock_game():
     clock = pygame.time.Clock()
     return clock
 
 def move_plat(state, plat_x, plat_y):
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            state["running"] = False
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and plat_x - constants.SPEED >= 0:
         plat_x -= constants.SPEED
     if keys[pygame.K_RIGHT] and plat_x + constants.PLATFORM_WIDTH + constants.SPEED  <= constants.WINDOW_WIDTH:
         plat_x += constants.SPEED
     return plat_x, plat_y
+
 
 def move_ball(ball_x, ball_y):
     # Actualizar posición de la pelota

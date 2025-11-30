@@ -23,23 +23,41 @@ ball_x = constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2
 ball_y = 10 + constants.BALL_RADIUS // 2
 
 # Diccionario para arrancar la variable running #
-state = {"running": True}
+state = {"running": True,"title": True}
 
 # Bucle principal #
 while state["running"]:
-    # Llamada a movimiento de plataforma y pelota #
-    tools.star_menu()
-    plat_x, plat_y = tools.move_plat(state, plat_x, plat_y)
-    ball_x, ball_y = tools.move_ball(ball_x, ball_y)
+    events = pygame.event.get()
+    if state["title"]:
+        title_text, title_rect, texto_opciones, rects_opciones = tools.star_menu(screen)
+        screen.fill(constants.BLACK)
+        screen.blit (title_text,title_rect)
+        for text, rect in zip(texto_opciones,rects_opciones):
+            screen.blit(text,rect)
+        for event in events:
+            if event.type == pygame.QUIT:
+                state["running"] = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    state["title"] = False
+                if event.key == pygame.K_ESCAPE:
+                    state["running"] = False
+        pygame.display.flip()
+                        
+    else:
+        # Llamada a movimiento de plataforma y pelota #
+        plat_x, plat_y = tools.move_plat(state, plat_x, plat_y)
+        ball_x, ball_y = tools.move_ball(ball_x, ball_y)
 
-    # Colisión con paredes #
-    tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state)
-
-    # Dibujo paleta y bola #
-    screen.fill(constants.BLACK)
-    pygame.draw.rect(screen,constants.BLUE,(plat_x,plat_y,constants.PLATFORM_WIDTH,constants.PLATFORM_HEIGHT),0,3)
-    pygame.draw.circle(screen, constants.GREEN, (int(ball_x), int(ball_y)),constants.BALL_RADIUS)
-
+        screen.fill(constants.BLACK)
+        
+        # Dibujo paleta y bola #    
+        pygame.draw.rect(screen,constants.BLUE,(plat_x,plat_y,constants.PLATFORM_WIDTH,constants.PLATFORM_HEIGHT),0,3)
+        pygame.draw.circle(screen, constants.RED, (int(ball_x), int(ball_y)),constants.BALL_RADIUS)
+        
+        # Colisión con paredes #
+        tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state)   
+        
     # Actualización de la  pantalla #
     pygame.display.flip()
     clock.tick(constants.FPS)

@@ -10,10 +10,12 @@ BALL_SPEED_Y = -5
 SPEED = 5
 FPS = 60
 TITLE = "PONG"
+GOTICH = "assets/fonts/gothic/DampfPlatz.ttf"
 
 # COLOURS ·
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
-BLUE = (255, 0, 0)
-GREEN = (0, 0, 255)
+BLUE = (0, 0, 255)
+GREEN = (0, 255,0)
+YELLOW = (255,255,0)
