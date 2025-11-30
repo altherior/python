@@ -10,6 +10,11 @@ from files import constants
 # Inicializamos el juego #
 pygame.init()
 
+# Variables puntuacion y vidas #
+font = pygame.font.SysFont(None, 30)
+score = 0
+lifes = 3
+
 
 screen = tools.config_game(constants.WINDOW_WIDTH,constants.WINDOW_HEIGHT,constants.TITLE,constants.WHITE)
 clock = tools.clock_game()
@@ -49,16 +54,21 @@ while state["running"]:
         plat_x, plat_y = tools.move_plat(state, plat_x, plat_y)
         ball_x, ball_y = tools.move_ball(ball_x, ball_y)
 
+        # Limpieza de la pantalla #
         screen.fill(constants.BLACK)
         
+        # Dibujo de la puntación y las vidas #
+        score_points = tools.points(score, font)
+        screen.blit(score_points, (10, 10))
+
         # Dibujo paleta y bola #    
         pygame.draw.rect(screen,constants.BLUE,(plat_x,plat_y,constants.PLATFORM_WIDTH,constants.PLATFORM_HEIGHT),0,3)
         pygame.draw.circle(screen, constants.RED, (int(ball_x), int(ball_y)),constants.BALL_RADIUS)
         
         # Colisión con paredes #
-        tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state)   
-        
-    # Actualización de la  pantalla #
+        score = tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state, score)   
+    # Escribiendo datos y actualización de la  pantalla #
+    
     pygame.display.flip()
     clock.tick(constants.FPS)
 pygame.quit()

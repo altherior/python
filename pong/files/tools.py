@@ -36,7 +36,6 @@ def move_plat(state, plat_x, plat_y):
         plat_x += constants.SPEED
     return plat_x, plat_y
 
-
 def move_ball(ball_x, ball_y):
     # Actualizar posición de la pelota
     #print (ball_x, ball_y)
@@ -44,7 +43,7 @@ def move_ball(ball_x, ball_y):
     ball_y += constants.BALL_SPEED_Y
     return ball_x, ball_y
 
-def collision_ball(ball_x, ball_y, plat_x, plat_y, state):
+def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score):
     # Comprobar rebote en el borde inferior
     if ball_y - constants.BALL_RADIUS <= 0:
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
@@ -56,5 +55,11 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state):
     if (plat_y <= ball_y + constants.BALL_RADIUS <= plat_y + constants.PLATFORM_HEIGHT) and \
         (plat_x<= ball_x <= plat_x + constants.PLATFORM_WIDTH):
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
-    # Devuelves las variables actualizadas
+        score += 1
+        # Devuelves las variables actualizadas
+        
+    return score
     
+def points(score,font):
+    text_score = font.render(f"Puntuacion: {score}", True, constants.WHITE)
+    return text_score
