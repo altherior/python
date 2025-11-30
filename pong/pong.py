@@ -58,12 +58,15 @@ while state["running"]:
         screen.fill(constants.BLACK)
         
         # Dibujo de la puntación y las vidas #
+        number_lifes = tools.lifes(lifes, font, screen)
         score_points = tools.points(score, font)
         screen.blit(score_points, (10, 10))
+        screen.blit(number_lifes, (700, 10))
 
         # Dibujo paleta y bola #    
         pygame.draw.rect(screen,constants.BLUE,(plat_x,plat_y,constants.PLATFORM_WIDTH,constants.PLATFORM_HEIGHT),0,3)
         pygame.draw.circle(screen, constants.RED, (int(ball_x), int(ball_y)),constants.BALL_RADIUS)
+        
         
         # Colisión con paredes #
         score = tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state, score)   

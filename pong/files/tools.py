@@ -63,3 +63,9 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score):
 def points(score,font):
     text_score = font.render(f"Puntuacion: {score}", True, constants.WHITE)
     return text_score
+
+def lifes(lifes, font, screen):
+    text_lifes = font.render("Vidas Restantes: ", True, constants.WHITE )
+    for i in range (lifes):
+        pygame.draw.rect(screen, constants.RED, (900 + i * 35, 10, 30, 15),0,3)
+    return text_lifes    
