@@ -69,7 +69,7 @@ while state["running"]:
         
         
         # Colisión con paredes #
-        score = tools.collision_ball(ball_x,ball_y, plat_x, plat_y, state, score)   
+        score, lifes , ball_x, ball_y = tools.collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes)  
     # Escribiendo datos y actualización de la  pantalla #
     
     pygame.display.flip()

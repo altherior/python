@@ -34,6 +34,8 @@ def move_plat(state, plat_x, plat_y):
         plat_x -= constants.SPEED
     if keys[pygame.K_RIGHT] and plat_x + constants.PLATFORM_WIDTH + constants.SPEED  <= constants.WINDOW_WIDTH:
         plat_x += constants.SPEED
+    if keys[pygame.K_q]:
+        state["running"] = False
     return plat_x, plat_y
 
 def move_ball(ball_x, ball_y):
@@ -43,12 +45,19 @@ def move_ball(ball_x, ball_y):
     ball_y += constants.BALL_SPEED_Y
     return ball_x, ball_y
 
-def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score):
+def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes):
     # Comprobar rebote en el borde inferior
     if ball_y - constants.BALL_RADIUS <= 0:
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
     if ball_y + constants.BALL_RADIUS > constants.WINDOW_HEIGHT:
-        state["running"] = False
+        if lifes > 1:
+            lifes -= 1
+            ball_x, ball_y = move_ball(constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2, 10 + constants.BALL_RADIUS // 2 )
+            constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
+            constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
+        else:
+            pass
+            
     if ball_x - constants.BALL_RADIUS <= 0 or ball_x + constants.BALL_RADIUS >= constants.WINDOW_WIDTH:
         constants.BALL_SPEED_X = -constants.BALL_SPEED_X
     # Colision con la plataforma
@@ -58,7 +67,7 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score):
         score += 1
         # Devuelves las variables actualizadas
         
-    return score
+    return score, lifes, ball_x,  ball_y
     
 def points(score,font):
     text_score = font.render(f"Puntuacion: {score}", True, constants.WHITE)
@@ -66,6 +75,6 @@ def points(score,font):
 
 def lifes(lifes, font, screen):
     text_lifes = font.render("Vidas Restantes: ", True, constants.WHITE )
-    for i in range (lifes):
-        pygame.draw.rect(screen, constants.RED, (900 + i * 35, 10, 30, 15),0,3)
+    for i in range (lifes - 1):
+        pygame.draw.rect(screen, constants.RED, (900+ i * 35, 10, 30, 15),0,3)
     return text_lifes    
