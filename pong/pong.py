@@ -12,8 +12,7 @@ pygame.init()
 
 # Variables puntuacion y vidas #
 font = pygame.font.SysFont(None, 30)
-score = 0
-lifes = 3
+
 
 
 screen = tools.config_game(constants.WINDOW_WIDTH,constants.WINDOW_HEIGHT,constants.TITLE,constants.WHITE)
@@ -38,18 +37,21 @@ while state["running"]:
         screen.fill(constants.BLACK)
         screen.blit (title_text,title_rect)
         for text, rect in zip(texto_opciones,rects_opciones):
-            screen.blit(text,rect)
+            screen.blit(text,rect)  
         for event in events:
             if event.type == pygame.QUIT:
                 state["running"] = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     state["title"] = False
-                if event.key == pygame.K_ESCAPE:
+                    lifes = 3
+                    score = 0
+                if event.key == pygame.K_q:
                     state["running"] = False
         pygame.display.flip()
                         
-    else:
+    elif not state["title"]:
+        
         # Llamada a movimiento de plataforma y pelota #
         plat_x, plat_y = tools.move_plat(state, plat_x, plat_y)
         ball_x, ball_y = tools.move_ball(ball_x, ball_y)

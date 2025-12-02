@@ -40,7 +40,7 @@ def move_plat(state, plat_x, plat_y):
 
 def move_ball(ball_x, ball_y):
     # Actualizar posición de la pelota
-    #print (ball_x, ball_y)
+    print (ball_y)
     ball_x += constants.BALL_SPEED_X 
     ball_y += constants.BALL_SPEED_Y
     return ball_x, ball_y
@@ -50,13 +50,15 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes):
     if ball_y - constants.BALL_RADIUS <= 0:
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
     if ball_y + constants.BALL_RADIUS > constants.WINDOW_HEIGHT:
-        if lifes > 1:
+        if lifes >0:
             lifes -= 1
-            ball_x, ball_y = move_ball(constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2, 10 + constants.BALL_RADIUS // 2 )
-            constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
-            constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
-        else:
-            pass
+            ball_x, ball_y = ball_new()
+        if lifes == 0:
+            state["title"] = True
+            ball_x, ball_y = ball_new()
+            
+            
+             
             
     if ball_x - constants.BALL_RADIUS <= 0 or ball_x + constants.BALL_RADIUS >= constants.WINDOW_WIDTH:
         constants.BALL_SPEED_X = -constants.BALL_SPEED_X
@@ -75,6 +77,14 @@ def points(score,font):
 
 def lifes(lifes, font, screen):
     text_lifes = font.render("Vidas Restantes: ", True, constants.WHITE )
-    for i in range (lifes - 1):
+
+    for i in range (lifes-1):
         pygame.draw.rect(screen, constants.RED, (900+ i * 35, 10, 30, 15),0,3)
     return text_lifes    
+
+def ball_new():
+    constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
+    constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
+    ball_x = constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2
+    ball_y = 10 + constants.BALL_RADIUS // 2
+    return ball_x, ball_y
