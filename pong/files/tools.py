@@ -1,6 +1,9 @@
 import pygame
 from files import constants
 
+
+
+
 def config_game (width, height, title, bg_color):
     pygame.init()
     screen = pygame.display.set_mode((width,height))
@@ -45,7 +48,7 @@ def move_ball(ball_x, ball_y):
     ball_y += constants.BALL_SPEED_Y
     return ball_x, ball_y
 
-def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes):
+def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_sound):
     # Comprobar rebote en el borde inferior
     if ball_y - constants.BALL_RADIUS <= 0:
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
@@ -58,13 +61,12 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes):
             ball_x, ball_y = ball_new()
             
             
-             
-            
     if ball_x - constants.BALL_RADIUS <= 0 or ball_x + constants.BALL_RADIUS >= constants.WINDOW_WIDTH:
         constants.BALL_SPEED_X = -constants.BALL_SPEED_X
     # Colision con la plataforma
     if (plat_y <= ball_y + constants.BALL_RADIUS <= plat_y + constants.PLATFORM_HEIGHT) and \
         (plat_x<= ball_x <= plat_x + constants.PLATFORM_WIDTH):
+        bounce(bounce_sound)
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
         score += 1
         # Devuelves las variables actualizadas
@@ -77,9 +79,13 @@ def points(score,font):
 
 def lifes(lifes, font, screen):
     text_lifes = font.render("Vidas Restantes: ", True, constants.WHITE )
-
-    for i in range (lifes-1):
-        pygame.draw.rect(screen, constants.RED, (900+ i * 35, 10, 30, 15),0,3)
+    total_lifes = 3
+    for i in range (total_lifes):
+        if i < lifes:
+            color = constants.GREEN  # color para vidas "activas"
+        else:
+            color = constants.RED  # color para vidas "perdidas" o inactivas
+        pygame.draw.rect(screen, color, (900+ i * 35, 10, 30, 15),0,3)
     return text_lifes    
 
 def ball_new():
@@ -88,3 +94,9 @@ def ball_new():
     ball_x = constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2
     ball_y = 10 + constants.BALL_RADIUS // 2
     return ball_x, ball_y
+
+def music():
+    pygame.mixer.music.load(constants.BACKGROUND_MUSIC)
+    pygame.mixer.music.play(-1)
+def bounce(bounce_sound):
+    bounce_sound.play()
