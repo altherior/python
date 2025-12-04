@@ -25,3 +25,5 @@ YELLOW = (255,255,0)
 # Sonidos y Musica #
 BACKGROUND_MUSIC = "assets/sound/pixel-power-surge.mp3"
 BOUNCI_BALL = "assets/sound/bounci_ball.mp3"
+LOST_LIFE = "assets/sound/falled-sound-effect.mp3"
+LOST = "assets/sound/Lost.wav"

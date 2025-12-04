@@ -14,8 +14,10 @@ tools.music()
 
 # Variables puntuacion y vidas #
 font = pygame.font.SysFont(None, 30)
-
 bounce_sound = pygame.mixer.Sound(constants.BOUNCI_BALL)
+lost_life = pygame.mixer.Sound(constants.LOST_LIFE)
+lost = pygame.mixer.Sound(constants.LOST)
+perdido = False
 
 
 screen = tools.config_game(constants.WINDOW_WIDTH,constants.WINDOW_HEIGHT,constants.TITLE,constants.WHITE)
@@ -74,9 +76,11 @@ while state["running"]:
         
         
         # Colisión con paredes #
-        score, lifes , ball_x, ball_y = tools.collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_sound)  
-    # Escribiendo datos y actualización de la  pantalla #
+        score, lifes , ball_x, ball_y = tools.collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_sound,lost_life,lost,perdido)  
     
-    pygame.display.flip()
+        
+
+    # Escribiendo datos y actualización de la  pantalla #
+        pygame.display.flip()
     clock.tick(constants.FPS)
 pygame.quit()

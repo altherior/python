@@ -43,12 +43,11 @@ def move_plat(state, plat_x, plat_y):
 
 def move_ball(ball_x, ball_y):
     # Actualizar posición de la pelota
-    print (ball_y)
     ball_x += constants.BALL_SPEED_X 
     ball_y += constants.BALL_SPEED_Y
     return ball_x, ball_y
 
-def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_sound):
+def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_sound,lost_life,lost,perdido):
     # Comprobar rebote en el borde inferior
     if ball_y - constants.BALL_RADIUS <= 0:
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
@@ -56,9 +55,17 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_s
         if lifes >0:
             lifes -= 1
             ball_x, ball_y = ball_new()
+            lost_life.play()
         if lifes == 0:
+            pygame.mixer.music.stop()
+            lost.play()
+            game_over()
+            pygame.time.wait(int(lost.get_length() * 1000))
+            pygame.mixer.music.rewind()
+            pygame.mixer.music.play(-1)
             state["title"] = True
             ball_x, ball_y = ball_new()
+
             
             
     if ball_x - constants.BALL_RADIUS <= 0 or ball_x + constants.BALL_RADIUS >= constants.WINDOW_WIDTH:
@@ -72,7 +79,17 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_s
         # Devuelves las variables actualizadas
         
     return score, lifes, ball_x,  ball_y
-    
+
+def game_over():
+    gameover = pygame.font.Font(constants.GOTICH,150)
+    screen = pygame.display.set_mode((constants.WINDOW_WIDTH,constants.WINDOW_HEIGHT))
+    screen.fill(constants.BLACK)
+
+    gameover_text = gameover.render("GAME OVER", True, constants.WHITE)
+    gameover_rect = gameover_text.get_rect(center = (constants.WINDOW_WIDTH//2, constants.WINDOW_HEIGHT//4))
+    screen.blit(gameover_text,gameover_rect)
+    screen.blit(gameover_text,gameover_rect)
+    pygame.display.flip()
 def points(score,font):
     text_score = font.render(f"Puntuacion: {score}", True, constants.WHITE)
     return text_score
