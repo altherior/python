@@ -33,14 +33,17 @@ ball_y = 10 + constants.BALL_RADIUS // 2
 
 # Diccionario para arrancar la variable running #
 state = {"running": True,"title": True}
-
+constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
+constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
 # Bucle principal #
 while state["running"]:
+    
     events = pygame.event.get()
     if state["title"]:
         title_text, title_rect, texto_opciones, rects_opciones = tools.star_menu(screen)
         screen.fill(constants.BLACK)
         screen.blit (title_text,title_rect)
+        
         for text, rect in zip(texto_opciones,rects_opciones):
             screen.blit(text,rect)  
         for event in events:

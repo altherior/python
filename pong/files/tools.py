@@ -60,6 +60,8 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_s
             pygame.mixer.music.stop()
             lost.play()
             game_over()
+            constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
+            constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
             pygame.time.wait(int(lost.get_length() * 1000))
             pygame.mixer.music.rewind()
             pygame.mixer.music.play(-1)
@@ -76,6 +78,7 @@ def collision_ball(ball_x, ball_y, plat_x, plat_y, state, score, lifes, bounce_s
         bounce(bounce_sound)
         constants.BALL_SPEED_Y = -constants.BALL_SPEED_Y
         score += 1
+        speed (score)
         # Devuelves las variables actualizadas
         
     return score, lifes, ball_x,  ball_y
@@ -106,8 +109,8 @@ def lifes(lifes, font, screen):
     return text_lifes    
 
 def ball_new():
-    constants.BALL_SPEED_X = constants.INITIAL_BALL_SPEED_X
-    constants.BALL_SPEED_Y = constants.INITIAL_BALL_SPEED_Y
+    constants.BALL_SPEED_X = constants.BALL_SPEED_X
+    constants.BALL_SPEED_Y = constants.BALL_SPEED_Y
     ball_x = constants.WINDOW_WIDTH // 2 - constants.BALL_RADIUS // 2
     ball_y = 10 + constants.BALL_RADIUS // 2
     return ball_x, ball_y
@@ -115,5 +118,17 @@ def ball_new():
 def music():
     pygame.mixer.music.load(constants.BACKGROUND_MUSIC)
     pygame.mixer.music.play(-1)
+
 def bounce(bounce_sound):
     bounce_sound.play()
+
+def speed(score):
+    if score > 3:
+        constants.BALL_SPEED_X = 7
+        constants.BALL_SPEED_Y = -7
+    elif score > 30:
+        cconstants.BALL_SPEED_X = 10
+        constants.BALL_SPEED_Y = -10
+    elif score > 50:
+        constants.BALL_SPEED_X = 15
+        constants.BALL_SPEED_Y = -15
